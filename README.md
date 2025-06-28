@@ -1,11 +1,34 @@
-# Agent Coder - Enhanced AI Coding Assistant
+# Agent Coder - Professional AI Coding Assistant
 
-A powerful, full-featured AI coding assistant with advanced Python backend integration, real-time collaboration, and comprehensive project analytics.
+A comprehensive, full-featured AI coding assistant with advanced capabilities including mobile development, cloud deployment, and IDE integration.
 
-## 🚀 Features
+## 🚀 New Features
 
-### Core AI Capabilities
-- **Multi-Provider AI Support**: OpenAI GPT, Google Gemini, Anthropic Claude, and Deepseek
+### 📱 Mobile Application Development
+- **Multi-Framework Support**: React Native, Flutter, Ionic, and Xamarin
+- **App Templates**: Pre-built templates for common mobile app types
+- **AI-Powered Generation**: Generate complete mobile apps from descriptions
+- **Live Preview**: Visual preview of mobile app layouts
+- **Cross-Platform Development**: Build for iOS, Android, and web simultaneously
+
+### ☁️ Cloud Deployment Options
+- **Multiple Providers**: Vercel, Netlify, AWS, Heroku, DigitalOcean, Firebase
+- **One-Click Deployment**: Deploy your applications with a single click
+- **Environment Management**: Configure environment variables and build settings
+- **Deployment Monitoring**: Track deployment status and logs
+- **Custom Domains**: Set up custom domains and SSL certificates
+
+### 🔧 IDE Integration
+- **Popular IDE Support**: VS Code, IntelliJ IDEA, Sublime Text, Atom
+- **Extension Marketplace**: Download and install Agent Coder extensions
+- **Keyboard Shortcuts**: Efficient coding with customizable shortcuts
+- **Configuration Management**: Easy setup and configuration guides
+- **Real-time Sync**: Sync your settings across different IDEs
+
+## 🎯 Core Features
+
+### Advanced AI Capabilities
+- **Multi-Provider AI Support**: OpenAI GPT, Google Gemini, Anthropic Claude
 - **Intelligent Code Generation**: Context-aware code creation across multiple languages
 - **Advanced Code Analysis**: Real-time quality, security, and performance analysis
 - **Smart Debugging**: AI-powered error detection and resolution suggestions
@@ -16,35 +39,29 @@ A powerful, full-featured AI coding assistant with advanced Python backend integ
 - **Real-Time Code Execution**: Run JavaScript code directly in the browser
 - **Project File Management**: Comprehensive file explorer and organization
 
-### 🆕 Advanced Features
-
-#### Real-Time Collaboration
+### Real-Time Collaboration
 - **Live Collaboration Sessions**: Work together with team members in real-time
 - **Code Comments & Reviews**: Line-specific comments with resolution tracking
 - **Participant Management**: Track active collaborators and session history
 - **Session Sharing**: Easy session creation and invitation system
 
-#### Project Analytics & Insights
+### Project Analytics & Insights
 - **Health Score Monitoring**: Comprehensive project health assessment
 - **Language Distribution Analysis**: Visual breakdown of codebase composition
 - **Code Complexity Metrics**: Cyclomatic complexity and maintainability tracking
 - **Test Coverage Estimation**: Automated test coverage analysis
 - **Documentation Coverage**: Track and improve project documentation
-- **Issue Categorization**: Severity-based issue tracking and resolution
-- **Development Trends**: Activity tracking and progress visualization
 
-#### Intelligent Code Suggestions
+### Intelligent Code Suggestions
 - **AI-Powered Recommendations**: Performance, security, and style improvements
 - **Confidence Scoring**: AI confidence levels for each suggestion
 - **Impact Assessment**: Low, medium, and high impact categorization
 - **One-Click Application**: Easy suggestion implementation
-- **Pattern Recognition**: Language-specific best practice detection
 
-#### Code Templates Library
+### Code Templates Library
 - **Pre-Built Templates**: React components, API routes, data analysis scripts
 - **Searchable Collection**: Filter by language, category, and tags
 - **Rating System**: Community-driven template quality assessment
-- **Download Tracking**: Popular template identification
 - **One-Click Usage**: Instant template integration into projects
 
 ## 🏗️ Architecture
@@ -109,7 +126,6 @@ python run.py
 1. **OpenAI**: Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
 2. **Google Gemini**: Obtain API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
 3. **Anthropic Claude**: Get API key from [Anthropic Console](https://console.anthropic.com/)
-4. **Deepseek**: Register at [Deepseek Platform](https://platform.deepseek.com/)
 
 ### Environment Variables
 ```bash
@@ -120,91 +136,101 @@ VITE_API_URL=http://localhost:8000
 OPENAI_API_KEY=your_openai_api_key_here
 GOOGLE_API_KEY=your_google_api_key_here
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
-DEEPSEEK_API_KEY=your_deepseek_api_key_here
 HOST=0.0.0.0
 PORT=8000
 DEBUG=True
 ```
 
+## 📱 Mobile Development Guide
+
+### Getting Started with Mobile Development
+1. **Choose Framework**: Select from React Native, Flutter, Ionic, or Xamarin
+2. **Use Templates**: Start with pre-built templates for common app types
+3. **AI Generation**: Describe your app and let AI generate the complete code
+4. **Preview & Test**: Use the built-in preview to see your app layout
+
+### Supported Mobile Frameworks
+- **React Native**: Build native iOS and Android apps with JavaScript
+- **Flutter**: Google's UI toolkit for cross-platform development
+- **Ionic**: Hybrid mobile apps with web technologies
+- **Xamarin**: Microsoft's cross-platform mobile development
+
+## ☁️ Cloud Deployment Guide
+
+### Deployment Providers
+- **Vercel**: Frontend deployment with global CDN
+- **Netlify**: All-in-one platform for modern web projects
+- **AWS**: Amazon Web Services cloud platform
+- **Heroku**: Platform as a Service for full-stack applications
+- **DigitalOcean**: Simple cloud hosting for developers
+- **Firebase**: Google's mobile and web application platform
+
+### Deployment Process
+1. **Configure Settings**: Set project name, build command, and environment variables
+2. **Choose Provider**: Select your preferred cloud deployment provider
+3. **Deploy**: Click deploy and monitor the deployment process
+4. **Monitor**: Track deployment status and access your live application
+
+## 🔧 IDE Integration Guide
+
+### Supported IDEs
+- **Visual Studio Code**: Most popular code editor with rich extension ecosystem
+- **IntelliJ IDEA**: Powerful IDE for Java and other languages
+- **Sublime Text**: Lightweight and fast text editor
+- **Atom**: Hackable text editor for the 21st century
+
+### Installation Steps
+1. **Download Extension**: Get the Agent Coder extension for your IDE
+2. **Configure API Keys**: Set up your AI provider API keys
+3. **Customize Settings**: Configure features and keyboard shortcuts
+4. **Start Coding**: Use AI-powered features directly in your IDE
+
 ## 📚 Usage Guide
 
-### Getting Started
-1. **Configure API Keys**: Go to Settings and add your AI provider API keys
-2. **Select AI Model**: Choose your preferred AI provider and model
-3. **Start Coding**: Use the Chat interface for AI assistance or Code Editor for development
+### Mobile Development Workflow
+1. Navigate to the Mobile Development tab
+2. Choose your preferred framework (React Native, Flutter, etc.)
+3. Either use a template or generate a new app with AI
+4. Preview your app in phone or tablet mode
+5. Download or integrate the code into your project
 
-### Chat Interface
-- Ask coding questions and get intelligent responses
-- Request code generation with specific requirements
-- Debug issues with AI-powered analysis
-- Get explanations for complex programming concepts
+### Cloud Deployment Workflow
+1. Go to the Cloud Deployment tab
+2. Select your deployment provider
+3. Configure project settings and environment variables
+4. Click deploy and monitor the process
+5. Access your live application via the provided URL
 
-### Code Editor
-- Write and edit code with syntax highlighting
-- Run JavaScript code directly in the browser
-- Analyze code quality with built-in tools
-- Manage project files and structure
+### IDE Integration Workflow
+1. Visit the IDE Integration tab
+2. Choose your IDE and download the extension
+3. Follow the installation and configuration guide
+4. Use keyboard shortcuts for AI-powered coding features
+5. Sync your settings across different development environments
 
-### Collaboration Features
-- Start collaboration sessions for team projects
-- Add comments to specific code lines
-- Review and resolve team feedback
-- Track session activity and participants
+## 🎯 Supported Languages & Technologies
 
-### Analytics Dashboard
-- Monitor project health and quality metrics
-- Analyze language distribution and complexity
-- Track development trends and progress
-- Identify and resolve code issues
-
-### Code Suggestions
-- Get AI-powered improvement recommendations
-- Apply suggestions with one click
-- Filter by suggestion type and impact
-- Track suggestion confidence levels
-
-### Template Library
-- Browse pre-built code templates
-- Filter by language, category, and tags
-- Use templates to jumpstart development
-- Download or copy templates for offline use
-
-## 🎯 Supported Languages
-
-### Primary Support
+### Programming Languages
 - **JavaScript/TypeScript**: Full analysis, suggestions, and templates
 - **Python**: Comprehensive AST analysis and best practices
-- **React/JSX**: Component analysis and optimization
-- **Node.js**: Backend development patterns
+- **Java**: Enterprise development patterns and optimization
+- **C/C++**: System programming and performance optimization
+- **Dart**: Flutter mobile development
+- **C#**: Xamarin and .NET development
 
-### Additional Support
-- Java, C/C++, HTML/CSS, JSON, YAML, SQL, Bash, Go, Rust, PHP, Ruby
+### Mobile Technologies
+- **React Native**: Cross-platform mobile development
+- **Flutter**: Google's UI toolkit
+- **Ionic**: Hybrid mobile apps
+- **Xamarin**: Microsoft's mobile platform
 
-## 🔌 API Integration
-
-### Python Backend Endpoints
-```bash
-# Chat with AI models
-POST /api/chat
-
-# Analyze code quality
-POST /api/analyze-code
-
-# Analyze project structure
-POST /api/analyze-project
-
-# Get available models
-GET /api/models
-
-# Health check
-GET /api/health
-```
-
-### Frontend Services
-- **AI Service**: Multi-provider AI communication
-- **Project Service**: Project analysis and management
-- **Suggestion Service**: Code improvement recommendations
-- **Template Service**: Template management and usage
+### Cloud Platforms
+- **Vercel**: Frontend deployment and serverless functions
+- **Netlify**: JAMstack deployment and edge functions
+- **AWS**: Comprehensive cloud services
+- **Heroku**: Platform as a Service
+- **DigitalOcean**: Simple cloud hosting
+- **Firebase**: Google's app development platform
 
 ## 🤝 Contributing
 
@@ -216,12 +242,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 3. Make your changes
 4. Add tests if applicable
 5. Submit a pull request
-
-### Code Standards
-- Follow TypeScript/Python best practices
-- Maintain test coverage
-- Use conventional commit messages
-- Update documentation as needed
 
 ## 📄 License
 
@@ -244,18 +264,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🗺️ Roadmap
 
+### Recently Added ✅
+- [x] Mobile Application Development
+- [x] Cloud Deployment Options
+- [x] IDE Integration Support
+
 ### Upcoming Features
 - [ ] Real-time collaborative editing
 - [ ] Advanced debugging tools
 - [ ] Custom AI model integration
 - [ ] Plugin system for extensions
-- [ ] Mobile app development
-- [ ] Cloud deployment options
 - [ ] Advanced project templates
 - [ ] Code review automation
 - [ ] Performance profiling tools
-- [ ] Integration with popular IDEs
+- [ ] Team management features
+- [ ] Enterprise SSO integration
+- [ ] Advanced analytics dashboard
 
 ---
 
-**Agent Coder** - Empowering developers with AI-driven coding assistance and collaboration tools.
+**Agent Coder Pro** - The ultimate AI-powered development platform for modern software development.

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Bot, Code, FolderOpen, Settings, MessageSquare, Users, BarChart3, Lightbulb, FileText } from 'lucide-react';
+import { Bot, Code, FolderOpen, Settings, MessageSquare, Users, BarChart3, Lightbulb, FileText, Smartphone, Cloud, Code2 } from 'lucide-react';
 
 interface HeaderProps {
-  activeTab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates';
-  onTabChange: (tab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates') => void;
+  activeTab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide';
+  onTabChange: (tab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide') => void;
 }
 
 export function Header({ activeTab, onTabChange }: HeaderProps) {
@@ -11,6 +11,9 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
     { id: 'chat' as const, label: 'Chat', icon: MessageSquare },
     { id: 'editor' as const, label: 'Code Editor', icon: Code },
     { id: 'explorer' as const, label: 'Project Explorer', icon: FolderOpen },
+    { id: 'mobile' as const, label: 'Mobile Dev', icon: Smartphone },
+    { id: 'deployment' as const, label: 'Cloud Deploy', icon: Cloud },
+    { id: 'ide' as const, label: 'IDE Integration', icon: Code2 },
     { id: 'collaboration' as const, label: 'Collaboration', icon: Users },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'suggestions' as const, label: 'Suggestions', icon: Lightbulb },
@@ -25,7 +28,7 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
           <div className="flex items-center space-x-3">
             <Bot className="h-8 w-8 text-primary-600" />
             <h1 className="text-xl font-bold text-gray-900">Agent Coder</h1>
-            <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">Enhanced</span>
+            <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">Pro</span>
           </div>
           
           <nav className="flex space-x-1 overflow-x-auto">

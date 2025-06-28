@@ -8,10 +8,13 @@ import { CodeCollaboration } from './components/CodeCollaboration';
 import { ProjectAnalytics } from './components/ProjectAnalytics';
 import { CodeSuggestions } from './components/CodeSuggestions';
 import { CodeTemplates } from './components/CodeTemplates';
+import { MobileDevelopment } from './components/MobileDevelopment';
+import { CloudDeployment } from './components/CloudDeployment';
+import { IDEIntegration } from './components/IDEIntegration';
 import { AgentProvider } from './context/AgentContext';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide'>('chat');
 
   return (
     <AgentProvider>
@@ -26,6 +29,9 @@ function App() {
           {activeTab === 'analytics' && <ProjectAnalytics />}
           {activeTab === 'suggestions' && <CodeSuggestions />}
           {activeTab === 'templates' && <CodeTemplates />}
+          {activeTab === 'mobile' && <MobileDevelopment />}
+          {activeTab === 'deployment' && <CloudDeployment />}
+          {activeTab === 'ide' && <IDEIntegration />}
           {activeTab === 'settings' && <SettingsPanel />}
         </main>
       </div>
