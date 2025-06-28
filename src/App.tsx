@@ -3,7 +3,7 @@ import { Header } from './components/Header';
 import { ChatInterface } from './components/ChatInterface';
 import { CodeEditor } from './components/CodeEditor';
 import { ProjectExplorer } from './components/ProjectExplorer';
-import { SettingsPanel } from './components/SettingsPanel';
+import { EnhancedSettingsPanel } from './components/EnhancedSettingsPanel';
 import { CodeCollaboration } from './components/CodeCollaboration';
 import { ProjectAnalytics } from './components/ProjectAnalytics';
 import { CodeSuggestions } from './components/CodeSuggestions';
@@ -18,7 +18,7 @@ import { PluginSystem } from './components/PluginSystem';
 import { AgentProvider } from './context/AgentContext';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide' | 'realtime' | 'debugger' | 'custom-ai' | 'plugins'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide' | 'realtime' | 'debugger' | 'custom-ai' | 'plugins'>('settings');
 
   return (
     <AgentProvider>
@@ -40,7 +40,7 @@ function App() {
           {activeTab === 'debugger' && <AdvancedDebugger />}
           {activeTab === 'custom-ai' && <CustomAIIntegration />}
           {activeTab === 'plugins' && <PluginSystem />}
-          {activeTab === 'settings' && <SettingsPanel />}
+          {activeTab === 'settings' && <EnhancedSettingsPanel />}
         </main>
       </div>
     </AgentProvider>
