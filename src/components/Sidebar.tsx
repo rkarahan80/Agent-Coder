@@ -1,5 +1,5 @@
 import React from 'react';
-import { Files, Search, GitBranch, Package } from 'lucide-react';
+import { Files, Search, GitBranch, Package, Settings } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: 'files' | 'search' | 'git' | 'extensions';
@@ -10,7 +10,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   const tabs = [
     { id: 'files' as const, icon: Files, label: 'Explorer' },
     { id: 'search' as const, icon: Search, label: 'Search' },
-    { id: 'git' as const, icon: GitBranch, label: 'Source Control' },
+    { id: 'git' as const, icon: GitBranch, label: 'GitHub' },
     { id: 'extensions' as const, icon: Package, label: 'Extensions' },
   ];
 
@@ -28,6 +28,15 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           <tab.icon className="h-5 w-5 text-gray-400" />
         </button>
       ))}
+      
+      <div className="flex-1"></div>
+      
+      <button
+        className="p-3 hover:bg-gray-700 transition-colors"
+        title="Settings"
+      >
+        <Settings className="h-5 w-5 text-gray-400" />
+      </button>
     </div>
   );
 }

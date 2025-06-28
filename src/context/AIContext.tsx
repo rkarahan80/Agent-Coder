@@ -24,6 +24,7 @@ interface AIState {
     content: string;
     confidence: number;
   }>;
+  apiKey?: string; // Computed property for the current provider's API key
 }
 
 type AIAction =
@@ -117,8 +118,14 @@ const AIContext = createContext<{
 export function AIProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(aiReducer, initialState);
 
+  // Compute the current API key based on the selected provider
+  const apiKey = state.apiKeys[state.provider];
+
   return (
-    <AIContext.Provider value={{ state, dispatch }}>
+    <AIContext.Provider value={{ 
+      state: { ...state, apiKey }, 
+      dispatch 
+    }}>
       {children}
     </AIContext.Provider>
   );

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useEditor } from '../context/EditorContext';
 import { useAI } from '../context/AIContext';
-import { X, Settings, Palette, Zap, Key } from 'lucide-react';
+import { X, Settings, Palette, Zap, Key, Github } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { APIKeyManager } from './APIKeyManager';
+import { GitHubIntegration } from './GitHubIntegration';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -11,12 +13,13 @@ interface SettingsModalProps {
 export function SettingsModal({ onClose }: SettingsModalProps) {
   const { state: editorState, dispatch: editorDispatch } = useEditor();
   const { state: aiState, dispatch: aiDispatch } = useAI();
-  const [activeTab, setActiveTab] = useState<'editor' | 'ai' | 'appearance'>('editor');
+  const [activeTab, setActiveTab] = useState<'editor' | 'ai' | 'appearance' | 'github'>('editor');
 
   const tabs = [
     { id: 'editor' as const, label: 'Editor', icon: Settings },
     { id: 'ai' as const, label: 'AI', icon: Zap },
     { id: 'appearance' as const, label: 'Appearance', icon: Palette },
+    { id: 'github' as const, label: 'GitHub', icon: Github },
   ];
 
   return (
@@ -208,58 +211,7 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
                   </select>
                 </div>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      <Key className="inline h-4 w-4 mr-1" />
-                      OpenAI API Key
-                    </label>
-                    <input
-                      type="password"
-                      value={aiState.apiKeys.openai}
-                      onChange={(e) => aiDispatch({
-                        type: 'SET_API_KEY',
-                        payload: { provider: 'openai', key: e.target.value }
-                      })}
-                      placeholder="sk-..."
-                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      <Key className="inline h-4 w-4 mr-1" />
-                      Gemini API Key
-                    </label>
-                    <input
-                      type="password"
-                      value={aiState.apiKeys.gemini}
-                      onChange={(e) => aiDispatch({
-                        type: 'SET_API_KEY',
-                        payload: { provider: 'gemini', key: e.target.value }
-                      })}
-                      placeholder="AI..."
-                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      <Key className="inline h-4 w-4 mr-1" />
-                      Claude API Key
-                    </label>
-                    <input
-                      type="password"
-                      value={aiState.apiKeys.claude}
-                      onChange={(e) => aiDispatch({
-                        type: 'SET_API_KEY',
-                        payload: { provider: 'claude', key: e.target.value }
-                      })}
-                      placeholder="sk-ant-..."
-                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
-                    />
-                  </div>
-                </div>
+                <APIKeyManager />
               </div>
             )}
 
@@ -310,6 +262,13 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
                     <div className="text-sm text-center text-white">High Contrast</div>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {activeTab === 'github' && (
+              <div className="space-y-6">
+                <h3 className="text-xl font-semibold text-white mb-4">GitHub Integration</h3>
+                <GitHubIntegration />
               </div>
             )}
           </div>
