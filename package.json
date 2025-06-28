@@ -1,7 +1,7 @@
 {
   "name": "agent-coder",
   "version": "1.0.0",
-  "description": "A powerful coding agent AI using OpenAI GPT-4",
+  "description": "A powerful coding agent AI using multiple premium AI providers",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,6 +13,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "openai": "^4.28.0",
+    "@google/generative-ai": "^0.2.1",
+    "@anthropic-ai/sdk": "^0.17.1",
     "express": "^4.18.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
