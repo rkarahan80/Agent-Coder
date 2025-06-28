@@ -1,231 +1,232 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { Play, Save, FileText, Plus, Trash2, Download } from 'lucide-react';
-import { useAgent } from '../context/AgentContext';
-import { CodeAnalyzer } from './CodeAnalyzer';
-import { getLanguageFromExtension, formatFileSize } from '../services/utils';
+import { useEditor } from '../context/EditorContext';
+import { useAI } from '../context/AIContext';
+import { TabBar } from './TabBar';
+import { AIInlineCompletion } from './AIInlineCompletion';
+import { motion } from 'framer-motion';
+import { Lightbulb, Zap, Code } from 'lucide-react';
 
 export function CodeEditor() {
-  const { state, dispatch } = useAgent();
-  const [code, setCode] = useState('// Welcome to Agent Coder\n// Start coding here...\n\nfunction hello() {\n  console.log("Hello, World!");\n}\n\nhello();');
-  const [output, setOutput] = useState('');
-  const [showAnalyzer, setShowAnalyzer] = useState(false);
-  const [newFileName, setNewFileName] = useState('');
-  const [showNewFileDialog, setShowNewFileDialog] = useState(false);
+  const { state: editorState, dispatch: editorDispatch } = useEditor();
+  const { state: aiState, dispatch: aiDispatch } = useAI();
+  const editorRef = useRef<any>(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
 
-  const activeFile = state.projectFiles.find(f => f.id === state.activeFile);
-  const language = activeFile ? activeFile.language : 'javascript';
+  const activeFile = editorState.files.find(f => f.id === editorState.activeFileId);
 
   useEffect(() => {
-    if (activeFile) {
-      setCode(activeFile.content);
+    if (editorRef.current && activeFile) {
+      // Auto-save functionality
+      if (editorState.autoSave) {
+        const timer = setTimeout(() => {
+          editorDispatch({ type: 'SAVE_FILE', payload: activeFile.id });
+        }, 2000);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [activeFile]);
+  }, [activeFile?.content, editorState.autoSave]);
 
-  const handleCodeChange = (value: string | undefined) => {
-    const newCode = value || '';
-    setCode(newCode);
-    
-    if (activeFile) {
-      dispatch({
-        type: 'UPDATE_PROJECT_FILE',
-        payload: { id: activeFile.id, content: newCode }
+  const handleEditorDidMount = (editor: any, monaco: any) => {
+    editorRef.current = editor;
+
+    // Register AI completion provider
+    monaco.languages.registerCompletionItemProvider('javascript', {
+      provideCompletionItems: async (model: any, position: any) => {
+        const textUntilPosition = model.getValueInRange({
+          startLineNumber: 1,
+          startColumn: 1,
+          endLineNumber: position.lineNumber,
+          endColumn: position.column,
+        });
+
+        // Trigger AI completion
+        if (textUntilPosition.length > 10) {
+          // This would call your AI service
+          return {
+            suggestions: [
+              {
+                label: 'AI Suggestion',
+                kind: monaco.languages.CompletionItemKind.Snippet,
+                insertText: 'console.log("AI generated code");',
+                documentation: 'AI-powered code completion'
+              }
+            ]
+          };
+        }
+
+        return { suggestions: [] };
+      }
+    });
+
+    // Track cursor position
+    editor.onDidChangeCursorPosition((e: any) => {
+      setCursorPosition({
+        line: e.position.lineNumber,
+        column: e.position.column
+      });
+    });
+
+    // AI-powered error detection
+    editor.onDidChangeModelContent(() => {
+      const model = editor.getModel();
+      if (model) {
+        // Simulate AI-powered error detection
+        setTimeout(() => {
+          const markers = [
+            {
+              startLineNumber: 1,
+              startColumn: 1,
+              endLineNumber: 1,
+              endColumn: 10,
+              message: 'AI suggests: Consider using const instead of var',
+              severity: monaco.MarkerSeverity.Info,
+            }
+          ];
+          monaco.editor.setModelMarkers(model, 'ai-suggestions', markers);
+        }, 1000);
+      }
+    });
+  };
+
+  const handleEditorChange = (value: string | undefined) => {
+    if (activeFile && value !== undefined) {
+      editorDispatch({
+        type: 'UPDATE_FILE_CONTENT',
+        payload: { id: activeFile.id, content: value }
       });
     }
   };
 
-  const handleRun = () => {
-    if (language === 'javascript') {
-      try {
-        const logs: string[] = [];
-        const mockConsole = {
-          log: (...args: any[]) => logs.push(args.join(' ')),
-          error: (...args: any[]) => logs.push('Error: ' + args.join(' ')),
-          warn: (...args: any[]) => logs.push('Warning: ' + args.join(' ')),
-        };
+  const generateAICompletion = async () => {
+    if (!activeFile || !aiState.apiKeys.openai) return;
 
-        const func = new Function('console', code);
-        func(mockConsole);
-        
-        setOutput(logs.join('\n') || 'Code executed successfully (no output)');
-      } catch (error) {
-        setOutput(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      }
-    } else {
-      setOutput(`Code execution is currently only supported for JavaScript. Your ${language} code looks good!`);
+    aiDispatch({ type: 'SET_LOADING', payload: true });
+
+    try {
+      // This would call your AI service
+      const suggestion = {
+        id: Date.now().toString(),
+        type: 'completion' as const,
+        content: '// AI generated code completion\nfunction aiGeneratedFunction() {\n  return "Hello from AI";\n}',
+        confidence: 0.85
+      };
+
+      aiDispatch({ type: 'ADD_SUGGESTION', payload: suggestion });
+      setShowSuggestions(true);
+    } catch (error) {
+      console.error('AI completion error:', error);
+    } finally {
+      aiDispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 
-  const handleSave = () => {
-    const filename = activeFile?.name || `code.${language === 'javascript' ? 'js' : language}`;
-    const blob = new Blob([code], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleCreateFile = () => {
-    if (!newFileName.trim()) return;
-
-    const newFile = {
-      id: Date.now().toString(),
-      name: newFileName,
-      path: newFileName,
-      content: '',
-      language: getLanguageFromExtension(newFileName),
-      size: 0,
-      lastModified: new Date()
-    };
-
-    dispatch({ type: 'ADD_PROJECT_FILE', payload: newFile });
-    dispatch({ type: 'SET_ACTIVE_FILE', payload: newFile.id });
-    setNewFileName('');
-    setShowNewFileDialog(false);
-  };
-
-  const handleDeleteFile = (fileId: string) => {
-    dispatch({ type: 'DELETE_PROJECT_FILE', payload: fileId });
-  };
+  if (!activeFile) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-gray-900">
+        <div className="text-center">
+          <Code className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-gray-400 mb-2">Welcome to Cursor Alternative</h3>
+          <p className="text-gray-500">Open a file to start coding with AI assistance</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-8rem)]">
-      {/* File Explorer */}
-      <div className="card">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Files</h3>
-          <button
-            onClick={() => setShowNewFileDialog(true)}
-            className="btn-secondary flex items-center space-x-1"
+    <div className="flex-1 flex flex-col bg-gray-900">
+      <TabBar />
+      
+      <div className="flex-1 relative">
+        <Editor
+          height="100%"
+          language={activeFile.language}
+          value={activeFile.content}
+          onChange={handleEditorChange}
+          onMount={handleEditorDidMount}
+          theme={editorState.theme}
+          options={{
+            fontSize: editorState.fontSize,
+            wordWrap: editorState.wordWrap ? 'on' : 'off',
+            minimap: { enabled: editorState.minimap },
+            lineNumbers: editorState.lineNumbers ? 'on' : 'off',
+            tabSize: editorState.tabSize,
+            automaticLayout: true,
+            suggestOnTriggerCharacters: true,
+            quickSuggestions: true,
+            parameterHints: { enabled: true },
+            formatOnPaste: true,
+            formatOnType: true,
+            scrollBeyondLastLine: false,
+            renderWhitespace: 'selection',
+            cursorBlinking: 'smooth',
+            cursorSmoothCaretAnimation: true,
+          }}
+        />
+
+        {/* AI Suggestions Overlay */}
+        {showSuggestions && aiState.suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute top-4 right-4 bg-gray-800 border border-gray-600 rounded-lg p-4 max-w-sm"
           >
-            <Plus className="h-4 w-4" />
-            <span>New</span>
+            <div className="flex items-center space-x-2 mb-2">
+              <Lightbulb className="h-4 w-4 text-yellow-500" />
+              <span className="text-sm font-medium">AI Suggestion</span>
+              <button
+                onClick={() => setShowSuggestions(false)}
+                className="ml-auto text-gray-400 hover:text-gray-200"
+              >
+                ×
+              </button>
+            </div>
+            {aiState.suggestions.map((suggestion) => (
+              <div key={suggestion.id} className="mb-2">
+                <div className="text-xs text-gray-400 mb-1">
+                  Confidence: {Math.round(suggestion.confidence * 100)}%
+                </div>
+                <pre className="text-sm bg-gray-900 p-2 rounded text-green-400">
+                  {suggestion.content}
+                </pre>
+                <button
+                  onClick={() => {
+                    // Apply suggestion
+                    const newContent = activeFile.content + '\n' + suggestion.content;
+                    editorDispatch({
+                      type: 'UPDATE_FILE_CONTENT',
+                      payload: { id: activeFile.id, content: newContent }
+                    });
+                    setShowSuggestions(false);
+                  }}
+                  className="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
+                >
+                  Apply
+                </button>
+              </div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* AI Quick Actions */}
+        <div className="absolute bottom-4 right-4 flex space-x-2">
+          <button
+            onClick={generateAICompletion}
+            disabled={aiState.isLoading}
+            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition-colors"
+            title="Generate AI completion (Ctrl+Space)"
+          >
+            <Zap className="h-4 w-4" />
           </button>
         </div>
 
-        {showNewFileDialog && (
-          <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-            <input
-              type="text"
-              value={newFileName}
-              onChange={(e) => setNewFileName(e.target.value)}
-              placeholder="filename.js"
-              className="input-field mb-2"
-              onKeyPress={(e) => e.key === 'Enter' && handleCreateFile()}
-            />
-            <div className="flex space-x-2">
-              <button onClick={handleCreateFile} className="btn-primary text-sm">
-                Create
-              </button>
-              <button
-                onClick={() => {
-                  setShowNewFileDialog(false);
-                  setNewFileName('');
-                }}
-                className="btn-secondary text-sm"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-
-        <div className="space-y-1 max-h-64 overflow-y-auto">
-          {state.projectFiles.map((file) => (
-            <div
-              key={file.id}
-              className={`flex items-center justify-between p-2 rounded cursor-pointer hover:bg-gray-100 ${
-                state.activeFile === file.id ? 'bg-primary-100' : ''
-              }`}
-              onClick={() => dispatch({ type: 'SET_ACTIVE_FILE', payload: file.id })}
-            >
-              <div className="flex items-center space-x-2 flex-1">
-                <FileText className="h-4 w-4 text-gray-600" />
-                <div>
-                  <div className="text-sm font-medium">{file.name}</div>
-                  <div className="text-xs text-gray-500">{formatFileSize(file.content.length)}</div>
-                </div>
-              </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteFile(file.id);
-                }}
-                className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700"
-              >
-                <Trash2 className="h-3 w-3" />
-              </button>
-            </div>
-          ))}
+        {/* Status indicators */}
+        <div className="absolute bottom-4 left-4 flex items-center space-x-4 text-xs text-gray-400">
+          <span>Line {cursorPosition.line}, Column {cursorPosition.column}</span>
+          <span>{activeFile.language}</span>
+          {activeFile.isDirty && <span className="text-yellow-500">●</span>}
         </div>
-      </div>
-
-      {/* Code Editor */}
-      <div className="lg:col-span-2 card p-0 overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <div className="flex items-center space-x-4">
-            <FileText className="h-5 w-5 text-gray-600" />
-            <span className="font-medium">
-              {activeFile?.name || 'Untitled'}
-            </span>
-            <span className="text-sm text-gray-500">
-              {language}
-            </span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setShowAnalyzer(!showAnalyzer)}
-              className={`btn-secondary flex items-center space-x-2 ${showAnalyzer ? 'bg-primary-100' : ''}`}
-            >
-              <span>Analyze</span>
-            </button>
-            <button onClick={handleRun} className="btn-primary flex items-center space-x-2">
-              <Play className="h-4 w-4" />
-              <span>Run</span>
-            </button>
-            <button onClick={handleSave} className="btn-secondary flex items-center space-x-2">
-              <Save className="h-4 w-4" />
-              <span>Save</span>
-            </button>
-          </div>
-        </div>
-        <Editor
-          height="calc(100% - 73px)"
-          language={language}
-          value={code}
-          onChange={handleCodeChange}
-          theme="vs-dark"
-          options={{
-            minimap: { enabled: false },
-            fontSize: 14,
-            lineNumbers: 'on',
-            roundedSelection: false,
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            wordWrap: 'on',
-            tabSize: 2,
-          }}
-        />
-      </div>
-
-      {/* Output and Analysis */}
-      <div className="space-y-4">
-        <div className="card">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Output</h3>
-          <div className="bg-gray-900 rounded-lg p-4 h-32 overflow-y-auto">
-            <pre className="text-green-400 text-sm font-mono whitespace-pre-wrap">
-              {output || 'Run your code to see output here...'}
-            </pre>
-          </div>
-        </div>
-
-        {showAnalyzer && (
-          <CodeAnalyzer code={code} filename={activeFile?.name} />
-        )}
       </div>
     </div>
   );
