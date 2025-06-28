@@ -1,8 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Copy, Download, Play } from 'lucide-react';
+import { Send, Copy, Download, Play, Sparkles } from 'lucide-react';
 import { useAgent } from '../context/AgentContext';
 import { MessageBubble } from './MessageBubble';
-import { sendMessage } from '../services/api';
+import { sendMessage } from '../services/aiService';
+
+const CODING_PROMPTS = [
+  "Create a React component for a todo list",
+  "Write a Python function to sort a list",
+  "Debug this JavaScript code",
+  "Explain how async/await works",
+  "Create a REST API endpoint",
+  "Write unit tests for this function"
+];
 
 export function ChatInterface() {
   const { state, dispatch } = useAgent();
@@ -33,7 +42,13 @@ export function ChatInterface() {
     setInput('');
 
     try {
-      const response = await sendMessage(input.trim(), state.messages, state.apiKey, state.model);
+      const response = await sendMessage(
+        input.trim(), 
+        state.messages, 
+        state.apiKey, 
+        state.model,
+        state.provider
+      );
       
       const assistantMessage = {
         id: (Date.now() + 1).toString(),
@@ -57,12 +72,17 @@ export function ChatInterface() {
     }
   };
 
+  const handlePromptClick = (prompt: string) => {
+    setInput(prompt);
+  };
+
   if (!state.apiKey) {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
+          <Sparkles className="h-12 w-12 text-primary-600 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">API Key Required</h3>
-          <p className="text-gray-600 mb-4">Please configure your OpenAI API key in Settings to start coding.</p>
+          <p className="text-gray-600 mb-4">Please configure your API key in Settings to start coding with AI.</p>
         </div>
       </div>
     );
@@ -73,8 +93,21 @@ export function ChatInterface() {
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {state.messages.length === 0 ? (
           <div className="text-center py-12">
+            <Sparkles className="h-12 w-12 text-primary-600 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">Welcome to Agent Coder</h3>
-            <p className="text-gray-600">Ask me to help you with coding tasks, debug issues, or generate code.</p>
+            <p className="text-gray-600 mb-6">Ask me to help you with coding tasks, debug issues, or generate code.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
+              {CODING_PROMPTS.map((prompt, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePromptClick(prompt)}
+                  className="p-3 text-left bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200"
+                >
+                  <span className="text-sm text-gray-700">{prompt}</span>
+                </button>
+              ))}
+            </div>
           </div>
         ) : (
           state.messages.map((message) => (
@@ -112,6 +145,10 @@ export function ChatInterface() {
             <Send className="h-4 w-4" />
             <span>Send</span>
           </button>
+        </div>
+        <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+          <span>Using {state.provider} • {state.model}</span>
+          <span>{state.messages.length} messages</span>
         </div>
       </form>
     </div>
