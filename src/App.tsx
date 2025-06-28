@@ -8,6 +8,16 @@ import { StatusBar } from './components/StatusBar';
 import { CommandPalette } from './components/CommandPalette';
 import { SettingsModal } from './components/SettingsModal';
 import { Sidebar } from './components/Sidebar';
+import { ProjectTemplates } from './components/ProjectTemplates';
+import { CodeReviewAutomation } from './components/CodeReviewAutomation';
+import { PerformanceProfiler } from './components/PerformanceProfiler';
+import { TeamManagement } from './components/TeamManagement';
+import { EnterpriseSSO } from './components/EnterpriseSSO';
+import { AdvancedAnalytics } from './components/AdvancedAnalytics';
+import { DocumentationGenerator } from './components/DocumentationGenerator';
+import { TestingFramework } from './components/TestingFramework';
+import { SecurityScanner } from './components/SecurityScanner';
+import { APIDocGenerator } from './components/APIDocGenerator';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { motion } from 'framer-motion';
 
@@ -16,6 +26,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<'files' | 'search' | 'git' | 'extensions'>('files');
   const [showAIChat, setShowAIChat] = useState(false);
+  const [activeComponent, setActiveComponent] = useState<string>('editor');
 
   // Global hotkeys
   useHotkeys('ctrl+shift+p', () => setShowCommandPalette(true));
@@ -61,9 +72,19 @@ function App() {
                   </motion.div>
                 )}
 
-                {/* Code Editor */}
+                {/* Main Component */}
                 <div className="flex-1 flex flex-col">
-                  <CodeEditor />
+                  {activeComponent === 'editor' && <CodeEditor />}
+                  {activeComponent === 'templates' && <ProjectTemplates />}
+                  {activeComponent === 'codeReview' && <CodeReviewAutomation />}
+                  {activeComponent === 'profiler' && <PerformanceProfiler />}
+                  {activeComponent === 'team' && <TeamManagement />}
+                  {activeComponent === 'sso' && <EnterpriseSSO />}
+                  {activeComponent === 'analytics' && <AdvancedAnalytics />}
+                  {activeComponent === 'documentation' && <DocumentationGenerator />}
+                  {activeComponent === 'testing' && <TestingFramework />}
+                  {activeComponent === 'security' && <SecurityScanner />}
+                  {activeComponent === 'apiDocs' && <APIDocGenerator />}
                 </div>
 
                 {/* AI Chat Panel */}
