@@ -4,10 +4,14 @@ import { ChatInterface } from './components/ChatInterface';
 import { CodeEditor } from './components/CodeEditor';
 import { ProjectExplorer } from './components/ProjectExplorer';
 import { SettingsPanel } from './components/SettingsPanel';
+import { CodeCollaboration } from './components/CodeCollaboration';
+import { ProjectAnalytics } from './components/ProjectAnalytics';
+import { CodeSuggestions } from './components/CodeSuggestions';
+import { CodeTemplates } from './components/CodeTemplates';
 import { AgentProvider } from './context/AgentContext';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates'>('chat');
 
   return (
     <AgentProvider>
@@ -18,6 +22,10 @@ function App() {
           {activeTab === 'chat' && <ChatInterface />}
           {activeTab === 'editor' && <CodeEditor />}
           {activeTab === 'explorer' && <ProjectExplorer />}
+          {activeTab === 'collaboration' && <CodeCollaboration />}
+          {activeTab === 'analytics' && <ProjectAnalytics />}
+          {activeTab === 'suggestions' && <CodeSuggestions />}
+          {activeTab === 'templates' && <CodeTemplates />}
           {activeTab === 'settings' && <SettingsPanel />}
         </main>
       </div>
