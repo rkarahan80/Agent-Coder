@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Users, Share2, Cursor, MessageCircle, Eye, EyeOff, Wifi, WifiOff } from 'lucide-react';
+import { Users, Share2, MousePointer2, MessageCircle, Eye, EyeOff, Wifi, WifiOff } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import { useAgent } from '../context/AgentContext';
 
@@ -318,7 +318,7 @@ export function CollaborativeEditor() {
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <Cursor className="h-5 w-5 text-gray-600" />
+              <MousePointer2 className="h-5 w-5 text-gray-600" />
               <span className="font-medium">
                 {activeFile?.name || 'Collaborative Editor'}
               </span>
