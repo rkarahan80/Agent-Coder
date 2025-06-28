@@ -1,9 +1,9 @@
 import React from 'react';
-import { Bot, Code, FolderOpen, Settings, MessageSquare, Users, BarChart3, Lightbulb, FileText, Smartphone, Cloud, Code2 } from 'lucide-react';
+import { Bot, Code, FolderOpen, Settings, MessageSquare, Users, BarChart3, Lightbulb, FileText, Smartphone, Cloud, Code2, Bug, Brain, Puzzle, GitBranch } from 'lucide-react';
 
 interface HeaderProps {
-  activeTab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide';
-  onTabChange: (tab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide') => void;
+  activeTab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide' | 'realtime' | 'debugger' | 'custom-ai' | 'plugins';
+  onTabChange: (tab: 'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide' | 'realtime' | 'debugger' | 'custom-ai' | 'plugins') => void;
 }
 
 export function Header({ activeTab, onTabChange }: HeaderProps) {
@@ -14,6 +14,10 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
     { id: 'mobile' as const, label: 'Mobile Dev', icon: Smartphone },
     { id: 'deployment' as const, label: 'Cloud Deploy', icon: Cloud },
     { id: 'ide' as const, label: 'IDE Integration', icon: Code2 },
+    { id: 'realtime' as const, label: 'Real-time Collab', icon: GitBranch },
+    { id: 'debugger' as const, label: 'Advanced Debug', icon: Bug },
+    { id: 'custom-ai' as const, label: 'Custom AI', icon: Brain },
+    { id: 'plugins' as const, label: 'Plugin System', icon: Puzzle },
     { id: 'collaboration' as const, label: 'Collaboration', icon: Users },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart3 },
     { id: 'suggestions' as const, label: 'Suggestions', icon: Lightbulb },

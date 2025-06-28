@@ -11,10 +11,14 @@ import { CodeTemplates } from './components/CodeTemplates';
 import { MobileDevelopment } from './components/MobileDevelopment';
 import { CloudDeployment } from './components/CloudDeployment';
 import { IDEIntegration } from './components/IDEIntegration';
+import { CollaborativeEditor } from './components/CollaborativeEditor';
+import { AdvancedDebugger } from './components/AdvancedDebugger';
+import { CustomAIIntegration } from './components/CustomAIIntegration';
+import { PluginSystem } from './components/PluginSystem';
 import { AgentProvider } from './context/AgentContext';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'editor' | 'explorer' | 'settings' | 'collaboration' | 'analytics' | 'suggestions' | 'templates' | 'mobile' | 'deployment' | 'ide' | 'realtime' | 'debugger' | 'custom-ai' | 'plugins'>('chat');
 
   return (
     <AgentProvider>
@@ -32,6 +36,10 @@ function App() {
           {activeTab === 'mobile' && <MobileDevelopment />}
           {activeTab === 'deployment' && <CloudDeployment />}
           {activeTab === 'ide' && <IDEIntegration />}
+          {activeTab === 'realtime' && <CollaborativeEditor />}
+          {activeTab === 'debugger' && <AdvancedDebugger />}
+          {activeTab === 'custom-ai' && <CustomAIIntegration />}
+          {activeTab === 'plugins' && <PluginSystem />}
           {activeTab === 'settings' && <SettingsPanel />}
         </main>
       </div>
